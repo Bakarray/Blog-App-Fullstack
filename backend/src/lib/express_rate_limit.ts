@@ -10,3 +10,5 @@ const limiter = rateLimit({
       "You have spent too many requests in a given amount of time. Please try again later",
   },
 });
+
+export default limiter;

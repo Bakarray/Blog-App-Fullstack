@@ -5,6 +5,9 @@ import compression from "compression";
 import helmet from "helmet";
 
 import config from "@/config";
+import limiter from "@/lib/express_rate_limit";
+
+import Routes from "@/routes";
 
 import type { CorsOptions } from "cors";
 
@@ -41,13 +44,19 @@ app.use(
   })
 );
 app.use(helmet());
+app.use(limiter);
 
-app.get("/", (req, res) => {
-  res.json({
-    message: "Hello world",
-  });
-});
+(async () => {
+  try {
+    app.use("/api", Routes);
+    app.listen(PORT, () => {
+      console.log(`Server running on: http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.log("Failed to start the server", error);
 
-app.listen(PORT, () => {
-  console.log(`Server running on: http://localhost:${PORT}`);
-});
+    if (config.NODE_ENV === "production") {
+      process.exit(1);
+    }
+  }
+})();
