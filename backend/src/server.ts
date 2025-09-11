@@ -6,6 +6,7 @@ import helmet from "helmet";
 
 import config from "@/config";
 import limiter from "@/lib/express_rate_limit";
+import { connectToDatabase, disconnectFromDatabase } from "./lib/mongoose";
 
 import Routes from "@/routes";
 
@@ -48,6 +49,8 @@ app.use(limiter);
 
 (async () => {
   try {
+    await connectToDatabase();
+
     app.use("/api", Routes);
     app.listen(PORT, () => {
       console.log(`Server running on: http://localhost:${PORT}`);
@@ -60,3 +63,18 @@ app.use(limiter);
     }
   }
 })();
+
+// Handle server shutdown gracefully
+const handleServerShutdown = async () => {
+  try {
+    await disconnectFromDatabase();
+    console.log("Server SHUTDOWN");
+    process.exit(0);
+  } catch (error) {
+    console.log("Error during server shutdown", error);
+  }
+};
+
+// Listens for termination signals ('SIGTERM' AND 'SIGINT')
+process.on("SIGINT", handleServerShutdown);
+process.on("SIGTERM", handleServerShutdown);
