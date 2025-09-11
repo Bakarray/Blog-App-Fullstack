@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+body {
+  @apply bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark;
+}
+
+@theme {
+  --color-primary-light: #dce4f6;
+  --color-primary-dark: #005252;
+  --color-secondary-light: #f8f9fa;
+  --color-secondary-dark: #003d3d;
+  --color-accent-light: #43a800;
+  --color-accent-dark: #93ff4b;
+  --color-text-light: #212529;
+  --color-text-dark: #f8f9fa;
+
+  /* Additional colors for better contrast */
+  --color-background-light: #ffffff;
+  --color-background-dark: #002b2b;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
