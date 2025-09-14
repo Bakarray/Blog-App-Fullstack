@@ -9,6 +9,7 @@ import authorize from "@/middlewares/authorize";
 // CONTROLLERS
 import getCurrentUser from "@/controllers/user/get_current_user";
 import updateCurrentUser from "@/controllers/user/update_current_user";
+import deleteCurrentUser from "@/controllers/user/delete_current_user";
 
 // MODELS
 import User from "@/models/user";
@@ -72,6 +73,13 @@ router.put(
     .withMessage("Url must be less than 100 characters"),
   validationError,
   updateCurrentUser
+);
+
+router.delete(
+  "/current",
+  authenticate,
+  authorize(["user", "admin"]),
+  deleteCurrentUser
 );
 
 export default router;
