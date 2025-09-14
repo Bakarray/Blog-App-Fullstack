@@ -11,10 +11,10 @@ import getCurrentUser from "@/controllers/user/get_current_user";
 import updateCurrentUser from "@/controllers/user/update_current_user";
 import deleteCurrentUser from "@/controllers/user/delete_current_user";
 import getAllUsers from "@/controllers/user/get_all_users";
+import getUser from "@/controllers/user/get_user";
 
 // MODELS
 import User from "@/models/user";
-import user from "@/models/user";
 
 const router = Router();
 
@@ -83,6 +83,28 @@ router.delete(
   deleteCurrentUser
 );
 
-router.get("/", authenticate, authorize(["admin"]), getAllUsers);
+router.get(
+  "/",
+  authenticate,
+  authorize(["admin"]),
+  query("limit")
+    .optional()
+    .isInt({ min: 1, max: 50 })
+    .withMessage("Limit must be between 1 and 50"),
+  query("offset")
+    .optional()
+    .isInt({ min: 0 })
+    .withMessage("Offset must be a positive integer"),
+  validationError,
+  getAllUsers
+);
 
+router.get(
+  "/:userId",
+  authenticate,
+  authorize(["admin"]),
+  param("userId").notEmpty().isMongoId().withMessage("Invalid user ID"),
+  validationError,
+  getUser
+);
 export default router;
