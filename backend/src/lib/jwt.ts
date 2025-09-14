@@ -20,6 +20,7 @@ export const generateRefreshToken = (userId: Types.ObjectId): string => {
 
 export const verifyAccessToken = (token: string) => {
   return jwt.verify(token, config.JWT_ACCESS_SECRET);
+  // jwt.verify returns the payload stored in it
 };
 
 export const verifyRefreshToken = (token: string) => {
