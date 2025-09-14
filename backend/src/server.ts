@@ -19,7 +19,7 @@ const PORT = config.PORT;
 
 // configure cors
 const corsOptions: CorsOptions = {
-  origin(requestOrigin, callback) {
+  origin(origin, callback) {
     if (
       config.NODE_ENV === "development" ||
       !origin || // request has no origin header. e.g, from postman and the likes

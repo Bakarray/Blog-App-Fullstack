@@ -47,7 +47,7 @@ const login = async (
       sameSite: "strict",
     });
 
-    res.status(201).json({
+    res.status(200).json({
       user: {
         username: user.username,
         email: user.email,

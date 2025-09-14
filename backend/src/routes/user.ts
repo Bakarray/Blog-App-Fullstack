@@ -10,6 +10,7 @@ import authorize from "@/middlewares/authorize";
 import getCurrentUser from "@/controllers/user/get_current_user";
 import updateCurrentUser from "@/controllers/user/update_current_user";
 import deleteCurrentUser from "@/controllers/user/delete_current_user";
+import getAllUsers from "@/controllers/user/get_all_users";
 
 // MODELS
 import User from "@/models/user";
@@ -81,5 +82,7 @@ router.delete(
   authorize(["user", "admin"]),
   deleteCurrentUser
 );
+
+router.get("/", authenticate, authorize(["admin"]), getAllUsers);
 
 export default router;
